@@ -12,6 +12,8 @@ module.exports = {
     * 设置该项将使对应的入口文件放置到打包的根目录
     * 这里请不要配置文件后缀
     * 即 views/index/index.js 配置为 index/index
+    * 生成的路径为: /index.html
+    * 如果不配置则与 views目录结构相同: /index/index.html
     */
     rootEntires: [
       'index/index'
@@ -20,7 +22,7 @@ module.exports = {
   },
 
   dev: {
-    devtool: false,
+    devtool: '#cheap-module-eval-source-map',
     assetsPublicPath: '/',
     assetsSubDirectory: 'static',
     port: 9001,

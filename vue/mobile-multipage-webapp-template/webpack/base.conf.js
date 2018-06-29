@@ -25,8 +25,8 @@ module.exports = {
   entry: entries,
   output: {
     path: config.base.outputPath,
-    filename: 'js/[name].[hash:8].js',
-    chunkFilename: 'js/[name].[hash:8].chunk.js',
+    filename: '[name].[hash:8].js',
+    chunkFilename: '[name].[hash:8].chunk.js', // dev环境不能配置为[chunkhash]
     publicPath:
       process.env.NODE_ENV === 'production'
         ? config.prod.assetsPublicPath
@@ -51,7 +51,10 @@ module.exports = {
         test: /\.(png|jpg|gif|svg|bmp|eot|woff|woff2|ttf)/,
         loader: {
           loader: 'url-loader',
-          options: { limit: 5 * 1024, outputPath: 'imgs/[name].[hash:7].[ext]' }
+          options: {
+            limit: 5 * 1024,
+            name: utils.assetsPath('imgs/[name].[hash:7].[ext]')
+          }
         }
       },
       {

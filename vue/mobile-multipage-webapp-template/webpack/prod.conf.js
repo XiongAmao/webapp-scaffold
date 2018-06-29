@@ -11,6 +11,15 @@ const postcssConfig = require('./config/postcss.config.js')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const prodWebpackConfig = WebpackMerge(baseConfig, {
+  output: {
+    path: config.base.outputPath,
+    filename: 'name].[chunkhash:8].js',
+    chunkFilename: '[name].[chunkhash:8].chunk.js',
+    publicPath:
+      process.env.NODE_ENV === 'production'
+        ? config.prod.assetsPublicPath
+        : config.dev.assetsPublicPath
+  },
   module: {
     rules: [
       {

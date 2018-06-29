@@ -10,7 +10,7 @@ const Notifier = require('node-notifier')
 const devWebpackConfig = WebpackMerge(baseConfig, {
   devServer: {
     clientLogLevel: 'warning',
-    historyApiFallback: true,
+    // historyApiFallback: true,  // 开启后会忽略默认路径下的目录展示功能，未开启时，如果默认路径下没匹配到index.html 则会打开webpack目录展示
     hot: true,
     watchContentBase: true,
     compress: true,
