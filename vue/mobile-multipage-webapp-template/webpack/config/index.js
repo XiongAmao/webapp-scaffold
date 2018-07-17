@@ -19,6 +19,7 @@ module.exports = {
       'index/index'
     ],
     outputPath:  path.resolve(__dirname, '../../dist/'),
+    vendorList: ['vue']
   },
 
   dev: {

@@ -11,6 +11,7 @@ const config = require('./config')
 const entries = utils.getEntries(config.base.JsEntries, config.base.rootEntires)
 const views = utils.getEntries(config.base.HTMLEntries, config.base.rootEntires)
 const htmlPlugins = utils.getHtmlPlugins(views, entries)
+entries['vendor'] = config.base.vendorList // 配置长缓存库
 
 // 线程池
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
@@ -82,6 +83,31 @@ module.exports = {
         loader: 'vue-loader'
       }
     ]
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        //
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          minSize: 30000,
+          minChunks: 1,
+          chunks: 'all', //
+          priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+        },
+        // 项目公共代码
+        common: {
+          test: /[\\/]src[\\/]libs[\\/]/,
+          name: 'common',
+          minSize: 30000,
+          minChunks: 3,
+          chunks: 'all',
+          priority: -1,
+          reuseExistingChunk: true // 这个配置允许我们使用已经存在的代码块
+        }
+      }
+    }
   },
   plugins: [
     ...htmlPlugins,
