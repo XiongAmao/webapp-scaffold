@@ -1,26 +1,27 @@
 'use strict'
-const path = require('path')
 const baseConfig = require('./base.conf')
-const config = require('./config')
+const customConfig = require('./config')
 const postcssConfig = require('./config/postcss.config.js')
 const WebpackMerge = require('webpack-merge')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const Notifier = require('node-notifier')
 
 const devWebpackConfig = WebpackMerge(baseConfig, {
+  mode: 'development',
+  devtool: customConfig.dev.sourceMap ? '#cheap-module-eval-source-map' : false,
   devServer: {
     clientLogLevel: 'warning',
     // historyApiFallback: true,  // 开启后会忽略默认路径下的目录展示功能，未开启时，如果默认路径下没匹配到index.html 则会打开webpack目录展示
     hot: true,
     watchContentBase: true,
     compress: true,
-    contentBase: config.base.outputPath,
-    host: config.dev.host,
-    port: config.dev.port,
-    open: config.dev.autoOpen,
-    publicPath: config.dev.assetsPublicPath,
+    contentBase: customConfig.base.outputPath,
+    host: customConfig.dev.host,
+    port: customConfig.dev.port,
+    open: customConfig.dev.autoOpen,
+    publicPath: customConfig.dev.assetsPublicPath,
     quiet: true,
-    proxy: config.dev.proxy
+    proxy: customConfig.dev.proxy
   },
   module: {
     rules: [
@@ -70,7 +71,7 @@ const devWebpackConfig = WebpackMerge(baseConfig, {
             loader: 'sass-resources-loader',
             options: {
               sourceMap: true,
-              resources: config.prod.sassMixinPath
+              resources: customConfig.prod.sassMixinPath
             }
           }
         ]
@@ -80,7 +81,7 @@ const devWebpackConfig = WebpackMerge(baseConfig, {
   plugins: [
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
-        messages: [`Your application is running here: http://${config.dev.host}:${config.dev.port}`]
+        messages: [`Your application is running here: http://${customConfig.dev.host}:${customConfig.dev.port}`]
       },
       onErrors: () => {
         return (serverity, errors) => {

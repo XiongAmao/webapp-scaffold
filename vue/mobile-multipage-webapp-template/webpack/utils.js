@@ -26,8 +26,8 @@ function getEntries(globPath, rootEntires = []) {
    */
   files.forEach(filePath => {
     const extName = path.extname(filePath) // 文件名后缀
-    const baseName = path.basename(filePath)  // 文件名
-    const fileName = path.basename(filePath, extName)  // 文件名.后缀
+    const baseName = path.basename(filePath) // 文件名
+    const fileName = path.basename(filePath, extName) // 文件名.后缀
     const relativePath = path.relative(viewsDir, filePath)
     const split = filePath.split('/')
 
@@ -38,8 +38,7 @@ function getEntries(globPath, rootEntires = []) {
         let match
 
         rootEntires.forEach(matchPath => {
-          match = relativePath === `${matchPath}.js`
-            || relativePath === `${matchPath}.html`
+          match = relativePath === `${matchPath}.js` || relativePath === `${matchPath}.html`
         })
 
         if (match) {
@@ -47,7 +46,6 @@ function getEntries(globPath, rootEntires = []) {
         } else {
           name = relativePath.replace(extName, '')
         }
-
       } else {
         name = relativePath.replace(extName, '')
       }

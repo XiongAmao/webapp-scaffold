@@ -1,9 +1,7 @@
 'use strict'
 const os = require('os')
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HappyPack = require('happypack')
 
 const utils = require('./utils')
 const config = require('./config')
@@ -11,23 +9,19 @@ const config = require('./config')
 const entries = utils.getEntries(config.base.JsEntries, config.base.rootEntires)
 const views = utils.getEntries(config.base.HTMLEntries, config.base.rootEntires)
 const htmlPlugins = utils.getHtmlPlugins(views, entries)
-entries['vendor'] = config.base.vendorList // 配置长缓存库
-
-// 线程池
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 const resolve = (src) => {
   return path.resolve(__dirname, src)
 }
+entries['vendor'] = config.base.venderList
 
 module.exports = {
-  mode: process.env.NODE_ENV,
   context: resolve('../'),
   entry: entries,
   output: {
     path: config.base.outputPath,
     filename: '[name].[hash:8].js',
-    chunkFilename: '[name].[hash:8].chunk.js', // dev环境不能配置为[chunkhash]
+    chunkFilename: '[name].[hash:8].chunk.js',
     publicPath:
       process.env.NODE_ENV === 'production'
         ? config.prod.assetsPublicPath
@@ -44,9 +38,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: 'happypack/loader?id=babel',
         include: [resolve('../src')],
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              worker: os.cpus().length
+            }
+          },
+          'babel-loader'
+        ]
       },
       {
         test: /\.(png|jpg|gif|svg|bmp|eot|woff|woff2|ttf)/,
@@ -85,6 +87,9 @@ module.exports = {
     ]
   },
   optimization: {
+    runtimeChunk: {
+      name: 'mainfeat'
+    },
     splitChunks: {
       cacheGroups: {
         //
@@ -111,14 +116,7 @@ module.exports = {
   },
   plugins: [
     ...htmlPlugins,
-    new VueLoaderPlugin(),  // Vueloader@15 需要引入Vue plugin
+    new VueLoaderPlugin() // Vueloader@15 需要引入Vue plugin
 
-    // 多线程打包
-    new HappyPack({
-      id: 'babel', // 上面loader?后面指定的id
-      loaders: ['babel-loader?cacheDirectory'], // 实际匹配处理的loader
-      threadPool: happyThreadPool,
-      verbose: true
-    })
   ]
 }
