@@ -88,7 +88,7 @@ module.exports = {
   },
   optimization: {
     runtimeChunk: {
-      name: 'mainfeat'
+      name: 'manifest'
     },
     splitChunks: {
       cacheGroups: {

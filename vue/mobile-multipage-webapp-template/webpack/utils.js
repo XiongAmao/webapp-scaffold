@@ -66,7 +66,7 @@ const getHtmlPlugins = (views, entries) => {
       template: views[chunkName],
       title: webpackConfig.base.templateTitle,
       inject: true,
-      chunks: ['vendor', 'common'],
+      chunks: ['manifest', 'vendor', 'common'],
       minify: {
         removeComments: true,
         collapseWhitespace: true
