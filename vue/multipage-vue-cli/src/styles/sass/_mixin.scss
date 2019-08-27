@@ -1,0 +1,28 @@
+@mixin resetTextareaStyle() {
+  border: 0;
+  resize:none;
+  outline: none;
+}
+
+@function replace2xTo3x ($url, $search) {
+  $replace: '@3x';
+  $index: str-index($url, $search);
+
+   @if $index {
+    @return str-slice($url, 1, $index - 1) + $replace + replace2xTo3x(str-slice($url, $index + str-length($search)), $search);
+  }
+
+  @return $url;
+}
+
+@mixin setBackgroundImage ($url) {
+  background-image: url($url);
+  background-image: image-set(
+    url($url) 2x,
+    url(replace2xTo3x($url, '@2x')) 3x
+  );
+}
+
+@function rem($px) {
+  @return ($px / $vw_fontsize) * 0.5rem;
+}

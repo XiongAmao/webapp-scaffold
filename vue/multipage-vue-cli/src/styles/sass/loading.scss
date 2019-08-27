@@ -1,0 +1,39 @@
+#page-first-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  padding-top: 60%;
+  display: block;
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    margin: 0.19em;
+    background: #b6b6b6;
+    border-radius: 0.6em;
+    animation: loading 1s infinite alternate;
+
+    &:nth-of-type(2) {
+      background: #6d6d6d;
+      animation-delay: 0.2s;
+    }
+    &:nth-of-type(3) {
+      background: #646464;
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

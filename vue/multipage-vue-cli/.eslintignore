@@ -1,0 +1,5 @@
+node_modules
+plublic/*
+dist
+src/pages/test/*
+src/plugin
