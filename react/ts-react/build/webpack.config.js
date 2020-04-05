@@ -1,12 +1,13 @@
 const { resolvePath } = require('./utils/index')
 const { jsRules } = require('./config/base')
+const cssRules = require('./config/css')
 const plugins = require('./config/plugins')
 
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-  mode: 'development',
+  // mode: 'development',
   entry: {
     app: resolvePath('src/index.tsx')
   },
@@ -15,9 +16,7 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
-    rules: [...jsRules]
+    rules: [...jsRules, ...cssRules]
   },
-  plugins: [
-    ...plugins
-  ]
+  plugins: [...plugins]
 }
