@@ -27,5 +27,39 @@ module.exports = [
         }
       }
     ]
+  },
+  {
+    test: /\.less$/,
+    use: [
+      'style-loader',
+
+      // Automatic generation of style.d.ts
+      'css-modules-typescript-loader',
+
+      {
+        loader: 'css-loader',
+        options: {
+          modules: {
+            mode: 'local',
+            exportGlobals: true,
+            localIdentName: '[name]__[local]--[hash:base64:6]'
+          }
+        }
+      },
+      {
+        loader: 'less-loader',
+        options: {
+          lessOptions: {
+            javascriptEnabled: true
+          }
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: [require('autoprefixer')]
+        }
+      }
+    ]
   }
 ]
