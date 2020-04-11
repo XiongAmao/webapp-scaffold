@@ -1,9 +1,11 @@
+const { threadLoader } = require('./cache')
+
 module.exports = [
   {
     test: /\.scss$/,
     use: [
       'style-loader',
-
+      threadLoader(),
       // Automatic generation of style.d.ts
       'css-modules-typescript-loader',
 
